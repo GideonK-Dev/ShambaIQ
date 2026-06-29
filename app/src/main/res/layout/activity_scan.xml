@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://tools.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#050905"
+    tools:context=".ScanActivity">
+
+    <androidx.camera.view.PreviewView
+        android:id="@+id/viewFinder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <RelativeLayout
+        android:id="@+id/topToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#FFFFFF"
+        android:elevation="4dp"
+        android:paddingHorizontal="16dp">
+
+        <ImageButton
+            android:id="@+id/btnCloseScan"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_revert"
+            app:tint="#000000" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Scan Crop"
+            android:textColor="#111111"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/btnHelp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_help"
+            app:tint="#2E7D32" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tvInstruction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/topToolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:text="Position the leaf inside\nthe frame"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="normal"
+        android:shadowColor="#CC000000"
+        android:shadowRadius="6" />
+
+    <RelativeLayout
+        android:id="@+id/scanTargetContainer"
+        android:layout_width="290dp"
+        android:layout_height="290dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/bg_scan_target_corner"
+        android:padding="2dp">
+
+        <View
+            android:id="@+id/viewScanningLine"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#8BC34A" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/toggleModeContainer"
+        android:layout_width="210dp"
+        android:layout_height="42dp"
+        android:layout_below="@id/scanTargetContainer"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="36dp"
+        android:background="#A6000000"
+        android:orientation="horizontal"
+        android:padding="3dp"
+        android:weightSum="2">
+
+        <TextView
+            android:id="@+id/tabPhoto"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#689F38"
+            android:gravity="center"
+            android:text="PHOTO"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tabGallery"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="GALLERY"
+            android:textColor="#DDFFFFFF"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/shutterControlsBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/tipCardView"
+        android:layout_marginBottom="24dp"
+        android:paddingHorizontal="40dp">
+
+        <ImageButton
+            android:id="@+id/btnToggleFlash"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:background="#66000000"
+            android:src="@android:drawable/btn_star_big_off"
+            app:tint="#FFFFFF" />
+
+        <View
+            android:id="@+id/btnCapturePhoto"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/bg_shutter_button"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <ImageButton
+            android:id="@+id/btnFlipCamera"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:background="#66000000"
+            android:src="@android:drawable/ic_menu_camera"
+            app:tint="#FFFFFF" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/tipCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#F4F9F4"
+        android:orientation="vertical"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="18dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tip: For best results, scan a clear image of one leaf at a time."
+            android:textColor="#334433"
+            android:textSize="13sp"
+            android:lineSpacingExtra="3dp" />
+    </LinearLayout>
+
+</RelativeLayout>

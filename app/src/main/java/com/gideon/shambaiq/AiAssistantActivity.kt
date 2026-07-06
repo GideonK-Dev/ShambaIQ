@@ -1,137 +1,106 @@
 package com.gideon.shambaiq
 
-import android.os.Bundle
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.Toast
+import android.os.*
+import android.view.*
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import okhttp3.*
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.RequestBody.Companion.toRequestBody
-import org.json.JSONArray
-import org.json.JSONObject
-import java.io.IOException
+import androidx.recyclerview.widget.*
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import java.util.*
 
 class AiAssistantActivity : AppCompatActivity() {
-
-    private lateinit var chatAdapter: ChatAdapter
-    private val messageList = ArrayList<ChatMessage>()
-    private lateinit var rvChatHistory: RecyclerView
-    private lateinit var etMessageInput: EditText
-
-    private val client = OkHttpClient()
-
-    // ⚠️ PASTE YOUR BRAND NEW GENERATED KEY HERE INSIDE THE QUOTES
-    private val apiKey = "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"
+    private val messages = mutableListOf<ChatMessage>()
+    private lateinit var adapter: ChatAdapter // This will turn black once the class is added below
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ai_assistant)
 
-        rvChatHistory = findViewById(R.id.rvChatHistory)
-        etMessageInput = findViewById(R.id.etMessageInput)
-        val btnSendMessage = findViewById<ImageButton>(R.id.btnSendMessage)
+        val rv = findViewById<RecyclerView>(R.id.rvChatHistory)
+        val edt = findViewById<EditText>(R.id.etMessageInput)
+        val btn = findViewById<ImageButton>(R.id.btnSendMessage)
 
-        chatAdapter = ChatAdapter(messageList)
-        rvChatHistory.layoutManager = LinearLayoutManager(this).apply { stackFromEnd = true }
-        rvChatHistory.adapter = chatAdapter
+        adapter = ChatAdapter(messages) // This will turn black
+        rv.layoutManager = LinearLayoutManager(this)
+        rv.adapter = adapter
 
-        loadDefaultGreetings()
 
-        findViewById<ImageButton>(R.id.btnBackChat).setOnClickListener { finish() }
+        // Greeting
+        addMessage("Hello! I'm your ShambaIQ IA Farm Assistant. How can I help you with your crops, livestock, or farm management today?", false)
 
-        btnSendMessage.setOnClickListener {
-            val queryText = etMessageInput.text.toString().trim()
-            if (queryText.isNotEmpty()) {
-                sendMessageToOpenAI(queryText)
+        btn.setOnClickListener {
+            val text = edt.text.toString().trim()
+            if (text.isNotEmpty()) {
+                addMessage(text, true)
+                edt.text.clear()
+
+                val aiResponse = getLocalAIResponse(text)
+                Handler(Looper.getMainLooper()).postDelayed({
+                    addMessage(aiResponse, false)
+                }, 500)
             }
         }
     }
 
-    private fun loadDefaultGreetings() {
-        val currentTime = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(Date())
-
-        // Clear out any old elements to guarantee a pristine blank slate interface canvas
-        messageList.clear()
-
-        // This sets the clean, welcoming intro message from your AI assistant
-        messageList.add(ChatMessage(
-            "Hello! 🌾 I am your ShambaIQ AI Farm Assistant. How can I help you with your crops, livestock, or farm management today?",
-            false,
-            currentTime
-        ))
-
-        chatAdapter.notifyDataSetChanged()
+    private fun addMessage(text: String, isUser: Boolean) {
+        val time = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
+        messages.add(ChatMessage(text, isUser, time))
+        adapter.notifyItemInserted(messages.size - 1) // Error here will disappear
+        findViewById<RecyclerView>(R.id.rvChatHistory).scrollToPosition(messages.size - 1)
     }
 
-    private fun sendMessageToOpenAI(userMessage: String) {
-        val currentTime = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(Date())
-
-        messageList.add(ChatMessage(userMessage, true, currentTime))
-        chatAdapter.notifyItemInserted(messageList.size - 1)
-        rvChatHistory.smoothScrollToPosition(messageList.size - 1)
-        etMessageInput.text.clear()
-
-        val jsonBody = JSONObject().apply {
-            put("model", "gpt-4o")
-            val messagesArray = JSONArray().apply {
-                put(JSONObject().apply {
-                    put("role", "system")
-                    put("content", "You are an agronomy specialist AI. Keep responses straightforward, practical, actionable, and structured cleanly for smallholder farmers.")
-                })
-                put(JSONObject().apply {
-                    put("role", "user")
-                    put("content", userMessage)
-                })
+    private fun getLocalAIResponse(userMessage: String): String {
+        val userInput = userMessage.lowercase().trim()
+        var foundResponse = "I'm sorry, I don't recognize those symptoms."
+        try {
+            val inputStream = assets.open("farm_data.csv")
+            val reader = inputStream.bufferedReader()
+            reader.readLine()
+            reader.forEachLine { line ->
+                val parts = line.split("\",\"")
+                if (parts.size >= 3) {
+                    val keywords = parts[0].replace("\"", "").lowercase()
+                    val responseText = parts[2].replace("\"", "")
+                    val keywordsList = keywords.split(",")
+                    for (key in keywordsList) {
+                        if (userInput.contains(key.trim())) {
+                            foundResponse = responseText
+                            return@forEachLine
+                        }
+                    }
+                }
             }
-            put("messages", messagesArray)
+        } catch (e: Exception) {
+            foundResponse = "Error: ${e.message}"
+        }
+        return foundResponse
+    }
+
+    // --- PLACE THE CLASS HERE, INSIDE CHATACTIVITY ---
+    inner class ChatAdapter(private val list: List<ChatMessage>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+        override fun getItemViewType(position: Int): Int {
+            return if (list[position].isUser) 1 else 2
         }
 
-        val mediaType = "application/json; charset=utf-8".toMediaType()
-        val requestBody = jsonBody.toString().toRequestBody(mediaType)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+            val layout = if (viewType == 1) R.layout.activity_item_message_user else R.layout.activity_item_message_ai
+            val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
+            return object : RecyclerView.ViewHolder(view) {}
+        }
 
-        val request = Request.Builder()
-            .url("https://api.openai.com/v1/chat/completions")
-            .header("Authorization", "Bearer $apiKey")
-            .post(requestBody)
-            .build()
-
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                runOnUiThread {
-                    Toast.makeText(this@AiAssistantActivity, "Connection error.", Toast.LENGTH_SHORT).show()
-                }
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+            val message = list[position]
+            // Use correct IDs based on the layout type
+            if (message.isUser) {
+                holder.itemView.findViewById<TextView>(R.id.tvUserMessageText).text = message.text
+                holder.itemView.findViewById<TextView>(R.id.tvUserTimestamp).text = message.timestamp
+            } else {
+                holder.itemView.findViewById<TextView>(R.id.tvAiMessageText).text = message.text
+                holder.itemView.findViewById<TextView>(R.id.tvAiTimestamp).text = message.timestamp
             }
+        }
 
-            override fun onResponse(call: Call, response: Response) {
-                response.use {
-                    if (!response.isSuccessful) {
-                        runOnUiThread {
-                            Toast.makeText(this@AiAssistantActivity, "Error: ${response.code}", Toast.LENGTH_SHORT).show()
-                        }
-                        return
-                    }
-
-                    val responseString = response.body?.string()
-                    if (responseString != null) {
-                        val jsonResponse = JSONObject(responseString)
-                        val choices = jsonResponse.getJSONArray("choices")
-                        val aiReply = choices.getJSONObject(0).getJSONObject("message").getString("content")
-
-                        runOnUiThread {
-                            val responseTime = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(Date())
-                            messageList.add(ChatMessage(aiReply.trim(), false, responseTime))
-                            chatAdapter.notifyItemInserted(messageList.size - 1)
-                            rvChatHistory.smoothScrollToPosition(messageList.size - 1)
-                        }
-                    }
-                }
-            }
-        })
+        override fun getItemCount(): Int = list.size
     }
 }

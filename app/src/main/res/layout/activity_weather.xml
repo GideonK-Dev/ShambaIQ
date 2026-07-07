@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://tools.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#5C93D3"
+    tools:context=".WeatherActivity">
+
+    <!-- Background Image Layer (Set a sky image here if you have one, or keep the background gradient) -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:alpha="0.6"
+        android:src="@android:drawable/dialog_holo_light_frame" />
+
+    <!-- Top Action Icons Row -->
+    <RelativeLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <ImageButton
+            android:id="@+id/btnBackWeather"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_revert"
+            app:tint="#FFFFFF" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_menu_add"
+                app:tint="#FFFFFF" />
+
+            <ImageButton
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_menu_preferences"
+                app:tint="#FFFFFF" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/topBar"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingBottom="24dp">
+
+            <!-- 1. Hero Header Panel -->
+            <TextView
+                android:id="@+id/tvLocationName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ngong Road"
+                android:textColor="#FFFFFF"
+                android:textSize="28sp"
+                android:textStyle="normal" />
+
+<!--            <TextView-->
+<!--                android:id="@+id/tvDataAge"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="4dp"-->
+<!--                android:text="🕒 Data published moments ago"-->
+<!--                android:textColor="#E0EBF5"-->
+<!--                android:textSize="13sp" />-->
+
+            <!-- Main Giant Temperature -->
+            <TextView
+                android:id="@+id/tvCurrentTemp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="24dp"
+                android:text="23°"
+                android:textColor="#FFFFFF"
+                android:textSize="96sp"
+                android:textStyle="normal" />
+
+            <!-- General Status Subtitle -->
+            <TextView
+                android:id="@+id/tvWeatherCondition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:text="Mostly cloudy  •  Air quality: 66 - Moderate"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <!-- 2. Card: ShambaIQ Farming Advice / Air Quality -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/bg_glass_card"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:weightSum="1">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.75"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🌱 Farming Advisory"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvFarmingAdvice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:ellipsize="end"
+                        android:maxLines="3"
+                        android:text="Moderate conditions. Perfect timing for weeding, farm bed clearing, or soil layout inspections."
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <!-- Status Badge Circle Indicator Placeholder -->
+<!--                <RelativeLayout-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="54dp"-->
+<!--                    android:layout_gravity="center_vertical"-->
+<!--                    android:layout_weight="0.25"-->
+<!--                    android:background="@android:drawable/progress_horizontal">-->
+<!--                    -->
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_centerInParent="true"-->
+<!--                        android:text="Good"-->
+<!--                        android:textColor="#FFFFFF"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:textSize="12sp"/>-->
+
+<!--                    -->
+<!--                </RelativeLayout>-->
+            </LinearLayout>
+
+            <!-- 3. Card: Horizontal Hourly Slider Timeline -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_glass_card"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <!-- Mock Hourly Block item (Repeated dynamically or via list elements later) -->
+                        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center" android:paddingHorizontal="12dp">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Now" android:textColor="#FFFFFF" android:textSize="13sp"/>
+                            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:layout_marginVertical="6dp" android:src="@android:drawable/btn_star_big_on"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="23°" android:textColor="#FFFFFF" android:textStyle="bold"/>
+                        </LinearLayout>
+
+                        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center" android:paddingHorizontal="12dp">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="6:00 pm" android:textColor="#E0EBF5" android:textSize="13sp"/>
+                            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:layout_marginVertical="6dp" android:src="@android:drawable/btn_star_big_on"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="21°" android:textColor="#FFFFFF"/>
+                        </LinearLayout>
+
+                        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center" android:paddingHorizontal="12dp">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="7:00 pm" android:textColor="#E0EBF5" android:textSize="13sp"/>
+                            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:layout_marginVertical="6dp" android:src="@android:drawable/btn_star_big_on"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="20°" android:textColor="#FFFFFF"/>
+                        </LinearLayout>
+
+                        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center" android:paddingHorizontal="12dp">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="8:00 pm" android:textColor="#E0EBF5" android:textSize="13sp"/>
+                            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:layout_marginVertical="6dp" android:src="@android:drawable/btn_star_big_on"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="18°" android:textColor="#FFFFFF"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </LinearLayout>
+
+            <!-- 4. Card: Multi-day Forecast Layout -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_glass_card"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Multi-day forecast"
+                    android:textColor="#D4E4F5"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="12dp"/>
+
+                <!-- Row 1: Today -->
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="8dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Today" android:textColor="#FFFFFF" android:textSize="15sp" android:textStyle="bold"/>
+                    <ImageView android:layout_width="24dp" android:layout_height="24dp" android:layout_centerInParent="true" android:src="@android:drawable/btn_star_big_on"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="14° / 23°" android:textColor="#FFFFFF" android:textSize="15sp"/>
+                </RelativeLayout>
+
+                <!-- Row 2: Tomorrow -->
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingVertical="8dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Tomorrow" android:textColor="#FFFFFF" android:textSize="15sp"/>
+                    <ImageView android:layout_width="24dp" android:layout_height="24dp" android:layout_centerInParent="true" android:src="@android:drawable/btn_star_big_on"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="14° / 24°" android:textColor="#E0EBF5" android:textSize="15sp"/>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

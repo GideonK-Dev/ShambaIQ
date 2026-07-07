@@ -8,6 +8,9 @@
         android:name="android.hardware.camera"
         android:required="false" />
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -18,9 +21,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ShambaIQ">
         <activity
+            android:name=".WeatherActivity"
+            android:exported="false" />
+        <activity
             android:name=".AiAssistantActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".Item_message_ai"
             android:exported="false" />

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Semi-transparent sky blue overlay tint -->
+    <solid android:color="#4D6E9ED4" />
+    <corners android:radius="20dp" />
+</shape>

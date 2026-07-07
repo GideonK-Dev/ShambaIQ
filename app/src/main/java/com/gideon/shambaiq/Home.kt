@@ -32,5 +32,11 @@ class Home : AppCompatActivity() {
             val intent = Intent(this, AiAssistantActivity::class.java)
             startActivity(intent)
         }
+
+        val btnCardWeather= findViewById<androidx.cardview.widget.CardView>(R.id.cardWeather)
+        btnCardWeather.setOnClickListener {
+            val intent= Intent(this, WeatherActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

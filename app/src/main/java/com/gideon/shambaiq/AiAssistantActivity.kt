@@ -1,5 +1,6 @@
 package com.gideon.shambaiq
 
+import android.content.Intent
 import android.os.*
 import android.view.*
 import android.widget.*

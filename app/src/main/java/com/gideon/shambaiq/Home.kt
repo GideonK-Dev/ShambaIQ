@@ -38,5 +38,11 @@ class Home : AppCompatActivity() {
             val intent= Intent(this, WeatherActivity::class.java)
             startActivity(intent)
         }
+
+        val btnMarketPrices=findViewById<androidx.cardview.widget.CardView>(R.id.cardMarketPrices)
+        btnMarketPrices.setOnClickListener {
+            val intent= Intent(this, MarketPricesActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
